@@ -89,4 +89,39 @@ public class OrderRepository {
         return this.ans;
     }
 
+
+
+
+
+    public void deletePartnerById(String partnerId)
+    {
+       List<String> list =  orderList.get(partnerId);
+       for(String order: list)
+       {
+            if (orderAndPartner.containsKey(order))
+            {
+                orderAndPartner.remove(order);
+            }
+       }
+       orderList.remove(partnerId);
+       partnerDB.remove(partnerId);
+    }
+    public void deleteOrderById(String orderId)
+    {
+        if(orderAndPartner.containsKey(orderId))
+        {
+            String partner = orderAndPartner.get(orderId);
+            orderAndPartner.remove(orderId);
+            List<String> list = orderList.get(partner);
+            for(String order:list)
+            {
+                if(order.equals(orderId))
+                {
+                    list.remove(order);
+                }
+            }
+        }
+        orderDB.remove(orderId);
+    }
+
 }

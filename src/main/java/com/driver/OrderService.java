@@ -47,5 +47,13 @@ public class OrderService {
     {
         return orderRepository.getCountOfUnassignedOrders();
     }
+    public void deletePartnerById(String partnerId)
+    {
+        orderRepository.deletePartnerById(partnerId);
+    }
+    public void deleteOrderById(String orderId)
+    {
+        orderRepository.deleteOrderById(orderId);
+    }
 
 }
