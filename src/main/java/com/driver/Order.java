@@ -16,15 +16,6 @@ public class Order {
         int hh= Integer.valueOf(deliveryTime.substring(0,2));
         int mm= Integer.valueOf(deliveryTime.substring(3));
         this.deliveryTime= hh*60+mm;
-        //this.deliveryTime = Integer.parseInt(deliveryTime.substring(3))+Integer.parseInt(deliveryTime.substring(0,2))*60;
-       /*
-        LocalTime t = LocalTime.parse(deliveryTime);
-        int hour = t.getHour();
-        int minutes = t.getMinute();
-        int time = hour*60 + minutes;
-        this.deliveryTime = time;
-
-        */
     }
 
     public String getId() {

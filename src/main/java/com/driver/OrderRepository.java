@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -18,6 +19,7 @@ public class OrderRepository {
         this.partnerDB = new HashMap<String, DeliveryPartner>();
         this.orderList = new HashMap<String,List<String>>(); //partnerId, ListOfOrders
         this.orderAndPartner = new HashMap<String,String>(); // orderId, partnerId
+
     }
     Integer ans;
     List<String> temp;
@@ -88,9 +90,54 @@ public class OrderRepository {
         }
         return this.ans;
     }
+    public Integer getOrdersLeftAfterGivenTimeByPartnerId(String timeS,String partnerId)
+    {
+        Integer hour = Integer.valueOf(timeS.substring(0, 2));
+        Integer minutes = Integer.valueOf(timeS.substring(3));
+        Integer time = hour*60 + minutes;
 
+        Integer countOfOrders = 0;
+        if(orderList.containsKey(partnerId)){
+            List<String> orders = orderList.get(partnerId);
+            for(String order: orders){
+                if(orderDB.containsKey(order)){
+                    Order currOrder = orderDB.get(order);
+                    if(time < currOrder.getDeliveryTime()){
+                        countOfOrders += 1;
+                    }
+                }
+            }
+        }
+        return countOfOrders;
+    }
+    public String getLastDeliveryTimeByPartnerId(String partnerId)
+    {
+        Integer time = 0;
 
+        if(orderList.containsKey(partnerId)){
+            List<String> orders = orderList.get(partnerId);
+            for(String order: orders){
+                if(orderDB.containsKey(order)){
+                    Order currOrder = orderDB.get(order);
+                    time = Math.max(time, currOrder.getDeliveryTime());
+                }
+            }
+        }
 
+        Integer hour = time/60;
+        Integer minutes = time%60;
+
+        String hourInString = String.valueOf(hour);
+        String minInString = String.valueOf(minutes);
+        if(hourInString.length() == 1){
+            hourInString = "0" + hourInString;
+        }
+        if(minInString.length() == 1){
+            minInString = "0" + minInString;
+        }
+
+        return  hourInString + ":" + minInString;
+    }
 
 
     public void deletePartnerById(String partnerId)
